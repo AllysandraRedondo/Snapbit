@@ -313,9 +313,35 @@ video, canvas {
     window.location.href = "camera.html";
   }
 
-  function loadPhotos() {
-    const photoHeight = 150, gap = 20, padding = 30;
-    canvas.setHeight(photos.length * photoHeight + (photos.length - 1) * gap + padding * 2);
+function loadPhotos() {
+  const canvasWidth = 750;
+  const canvasHeight = 500;
+  canvas.setWidth(canvasWidth);
+  canvas.setHeight(canvasHeight);
+
+  // Center each photo and scale it to fit within the canvas
+  photos.forEach(photoSrc => {
+    fabric.Image.fromURL(photoSrc, img => {
+      const scale = Math.min(
+        canvasWidth / img.width,
+        canvasHeight / img.height
+      );
+
+      img.set({
+        left: canvasWidth / 2,
+        top: canvasHeight / 2,
+        scaleX: scale,
+        scaleY: scale,
+        originX: 'center',
+        originY: 'center',
+        selectable: false
+      });
+
+      canvas.add(img);
+    });
+  });
+}
+
 
     let y = padding;
     photos.forEach(photoSrc => {

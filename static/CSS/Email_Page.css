@@ -55,7 +55,7 @@ input {
     width: 324px;
     padding: 20px;
     text-align: center;
-    font-size: 20px;
+    font-size: 15px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
     outline: none;
 }
@@ -67,4 +67,11 @@ input[type="text"] {
 button:active {
     background-color: #031033;
     transform: translateY(2px);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

@@ -365,6 +365,15 @@ video, canvas {
     ctx.drawImage(deleteImg, -size / 2, -size / 2, size, size);
     ctx.restore();
   }
+
+  function download() {
+      const link = document.createElement("a");
+      link.download = "image.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+       
+        
 </script>
 
 </script>

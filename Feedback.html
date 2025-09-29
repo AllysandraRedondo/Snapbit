@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rate Experience</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #E7F6F3;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #FFFFFF;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 280px;
+    }
+
+    h2 {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .star {
+      color: #ccc;
+      transition: color 0.2s;
+    }
+
+    .star.hover,
+    .star.selected {
+      color: #FFD700; 
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Rate your experience!</h2>
+    <div class="stars">
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+    </div>
+  </div>
+
+  <script>
+    const stars = document.querySelectorAll('.star');
+    let rating = 0;
+
+    stars.forEach((star, index) => {
+      star.addEventListener('mouseover', () => {
+        resetStars();
+        for (let i = 0; i <= index; i++) {
+          stars[i].classList.add('hover');
+        }
+      });
+
+      star.addEventListener('mouseout', resetStars);
+
+      star.addEventListener('click', () => {
+        rating = index + 1;
+        resetStars();
+        for (let i = 0; i < rating; i++) {
+          stars[i].classList.add('selected');
+        }
+        console.log("Rating selected:", rating);
+      });
+    });
+
+    function resetStars() {
+      stars.forEach(star => star.classList.remove('hover'));
+    }
+  </script>
+
+</body>
+</html>

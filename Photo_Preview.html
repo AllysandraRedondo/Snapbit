@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Preview</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #E7F6F3;
+      margin: 0;
+      text-align: center;
+    }
+
+    .back {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 14px;
+      text-decoration: none;
+      color: black;
+    }
+
+    h2 {
+      margin-top: 60px;
+      margin-bottom: 20px;
+    }
+
+    /* frame style*/
+    .image-container {
+      background: #FFFFFF;
+      display: inline-block;
+      padding: 20px;
+      border-radius: 15px;
+      border: 2px solid #fffefe; 
+    }
+
+    .question {
+      margin: 20px 0 10px;
+      font-size: 15px;
+    }
+
+    .print-btn {
+      padding: 14px 30px;
+      border: 2px dashed #7C5EFF;
+      border-radius: 25px;
+      background: #FEFEFE;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .print-btn:hover {
+      background: #7C5EFF;
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#" class="back">◀ Go Back</a>
+
+  <h2>Here’s Your Image</h2>
+
+  
+  <div class="image-container">
+    <div class="image-grid">
+        <img id = "previewImage" class = "preview-Image" alt="Your Photo">
+      <!--<img src="image/cati.png" alt="Sample 1">
+      <img src="image/cati.png" alt="Sample 2">
+      <img src="image/cati.png" alt="Sample 3">
+      <div><img src="image/logo.png" alt="Sample 5"></div>-->
+    </div>
+  </div>
+
+  <p class="question">Are you satisfied with the design?</p>
+
+  <button class="print-btn" onclick= download()>Print My Picture</button>
+
+<script>
+
+window.onload = function() {
+    const savedImage = localStorage.getItem("previewImage");
+
+    if (savedImage) {
+        document.getElementById('previewImage').src = savedImage;
+    } else {
+        //document.getElementById('previewImage').alt = "No Image found bestie";
+        alert("No image found!");
+    }
+};
+
+function download() {
+    function download() {
+      const link = document.createElement("a");
+      link.download = "image.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+}
+
+</script>
+
+<!--    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 160px);
+      gap: 0; 
+      justify-content: center;
+    }
+
+        .image-grid div, .image-grid img {
+      width: 160px;
+      height: 130px;
+      background: #FFFFFF;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #7ebec7; 
+      font-size: 14px;
+    }
+      -->
+
+</body>
+</html>

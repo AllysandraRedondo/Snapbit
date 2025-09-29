@@ -182,7 +182,7 @@ video, canvas {
                     <canvas id="canvas"></canvas>
                 </div>
                 <div class="button-print">
-                    <button class="print" id="nextBtn" onClick="download()">Print</button>
+                    <button class="print" id="nextBtn" onclick= "PreviewPage()" >Print</button>
                 </div>
             </div>
         </div>
@@ -366,12 +366,28 @@ video, canvas {
     ctx.restore();
   }
 
-  function download() {
+  /*function download() {
       const link = document.createElement("a");
       link.download = "image.png";
       link.href = canvas.toDataURL("image/png");
       link.click();
-    }
+    }*/
+
+  //Re-direct to the preview page 
+
+  async function PreviewPage() {
+    const photoImage = canvas.toDataURL("image/png");
+    //When connecting to the pywebview (DON'T DELETE)
+    //await window.pywebview.api.saveImage(photoImage);
+    saveImage(photoImage);
+    //localStorage.setItem("previewImage", photoImage)
+    window.location.href = "Photo_Preview.html";
+    
+  }
+
+  function saveImage(photoImage) {
+    localStorage.setItem("previewImage", photoImage);
+  }
        
         
 </script>

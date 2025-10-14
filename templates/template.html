@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Frame Selection</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #b7e3eb; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 15px;
+      padding: 50px;              
+      box-shadow: 0px 6px 15px rgba(0,0,0,0.15);
+      width: 95%;                  
+      max-width: 1300px;          
+      height: 580px;          
+      display: flex;
+      flex-direction: column;
+  align-items: center;       /* Center content horizontally */
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: bold;
+      color: black;
+      margin-top: -20px;
+    }
+    .top-row{
+      margin-top: 20px;
+    }
+    .bottom-row{
+      margin-top: 50px;
+    }
+    .top-row, .bottom-row {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+    }
+
+    .frame-container {
+      background-color: #f5f3fb; 
+      padding: 30px;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      transition: 0.3s;
+      cursor: pointer;
+      box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .frame-container:hover {
+      transform: scale(1.05);
+    }
+
+    .frame-container.selected {
+      border: 2px solid #4a90e2; 
+      background-color: white;
+      box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .frame {
+      width: 250px; 
+      height: 170px;
+      border-radius: 6px;
+      display: block;
+    }
+
+.btn-container {
+  display: flex;
+  justify-content: flex-end; 
+  width: 100%;
+  margin-top: -50px;
+  margin-right: 50px;
+}
+
+.next-btn {
+  padding: 18px 48px;      
+  background-color: #e6f0ff;
+  border: none;
+  border-radius: 30px;      
+  font-size: 20px;         
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 3px 6px 8px rgba(0,0,0,0.25);
+  transition: 0.3s;
+}
+
+    .next-btn:hover {
+      background-color: #d0e0ff;
+    }
+
+    .next-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Choose a Template</h2>
+
+<div class="top-row">
+  <div class="frame-container" onclick="selectFrame(this, ' /camera?template=3')">
+    <img src="{{ url_for('static', filename='Images/templates/Template1.png') }}" alt="Frame 1" class="frame">
+  </div>
+
+  <div class="frame-container" onclick="selectFrame(this, '/camera?template=4')">
+    <img src="{{ url_for('static', filename='Images/templates/Template2.png') }}" alt="Frame 2" class="frame">
+  </div>
+</div>
+
+<div class="bottom-row">
+  <div class="frame-container" onclick="selectFrame(this, '/camera?template=5')">
+    <img src="{{ url_for('static', filename='Images/templates/Template3.png') }}" alt="Frame 3" class="frame">
+  </div>
+</div>
+
+
+    <div class="btn-container">
+      <button class="next-btn" id="nextBtn" disabled onclick="goNext()">Next</button>
+    </div>
+
+  </div>
+
+<script>
+  let selectedFrame = null;
+  let nextPage = "";
+
+  function selectFrame(container, page) {
+    document.querySelectorAll('.frame-container').forEach(frame => {
+      frame.classList.remove('selected');
+    });
+
+    container.classList.add('selected');
+    selectedFrame = container;
+    nextPage = page;
+
+    document.getElementById("nextBtn").disabled = false;
+  }
+
+  function goNext() {
+    if (nextPage) {
+      window.location.href = nextPage;
+    }
+  }
+</script>
+
+</body>
+</html>

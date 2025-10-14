@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Photo Booth</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 0; background: #111; color: #fff; }
+    .video-container { margin: 20px auto; }
+    .video-container img { width: 640px; height: 480px; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+    .swiper { width: 100%; padding: 20px 0; }
+    .swiper-slide { display: flex; justify-content: center; align-items: center; }
+    .swiper-slide button { border: none; background: transparent; cursor: pointer; }
+    .swiper-slide img { width: 100px; height: 100px; border-radius: 8px; object-fit: cover; border: 2px solid #fff; }
+  </style>
+</head>
+<body>
+  <h1>📸 Photo Booth</h1>
+
+  <!-- Video Feed -->
+  <div class="video-container">
+    <img id="videoFeed" src="{{ url_for('video_feed') }}" alt="Live Video Feed">
+  </div>
+
+  <!-- Filter Selector Carousel -->
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><button onclick="setFilter('dog')"><img src="{{ url_for('static', filename='Images/backgrounds/bg1.jpg') }}"></button></div>
+      <div class="swiper-slide"><button onclick="setFilter('mustache')"><img src="{{ url_for('static', filename='Images/backgrounds/bg2.jpg') }}"></button></div>
+      <div class="swiper-slide"><button onclick="setFilter('cat')"><img src="{{ url_for('static', filename='Images/backgrounds/bg3.jpg') }}"></button></div>
+      <div class="swiper-slide"><button onclick="setFilter('sunglasses')"><img src="{{ url_for('static', filename='Images/backgrounds/bg4.jpg') }}"></button></div>
+      <div class="swiper-slide"><button onclick="setFilter('headband')"><img src="{{ url_for('static', filename='Images/backgrounds/bg5.jpg') }}"></button></div>
+      <div class="swiper-slide"><button onclick="setFilter('shark')"><img src="{{ url_for('static', filename='Images/backgrounds/bg6.jpg') }}"></button></div>
+    </div>
+  </div>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    new Swiper(".mySwiper", {
+      slidesPerView: 3,
+      spaceBetween: 20,
+      centeredSlides: true,
+      loop: true,
+    });
+
+    function setFilter(name) {
+      fetch(`/set_filter/${name}`)
+        .then(res => console.log(`Switched to ${name}`))
+        .catch(err => console.error(err));
+    }
+  </script>
+</body>
+</html>

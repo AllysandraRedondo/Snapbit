@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Loading Page</title>
+<style>
+  
+  body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #d9f0ff, #a8d8f0, #82bde6);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+
+  .loading-card {
+    background: #ffffff;
+    border-radius: 25px;
+    padding: 70px 80px; 
+    box-shadow:
+      25px 25px 60px rgba(0,0,0,0.12),
+      inset 0 0 50px rgba(138, 173, 221, 0.18);
+    text-align: center;
+    width: 600px;  
+  }
+
+  
+  .loading-card h1 {
+    font-weight: 700;
+    font-size: 2.5rem; 
+    margin-bottom: 40px;
+    color: #222;
+  }
+
+
+  .loading-card img {
+    height: 180px; 
+    margin-bottom: 40px;
+    user-select: none;
+  }
+
+  
+  .progress-bar-container {
+    background-color: #cce1ff;
+    border-radius: 20px;
+    height: 30px; 
+    width: 100%;
+    overflow: hidden;
+  }
+
+
+  .progress-bar {
+    background: linear-gradient(90deg, #6fa8dc, #3d85c6);
+    height: 100%;
+    width: 0;
+    border-radius: 20px;
+    transition: width 0.2s ease;
+  }
+</style>
+</head>
+<body>
+  <div class="loading-card">
+    <h1>Your Picture is Printing</h1>
+    <img src="{{ url_for('static', filename='Images/waiting/cati.png') }}" alt="Cat" />
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+<script>
+  const progressBar = document.getElementById('progressBar');
+  let progress = 0;
+  const duration = 5000; 
+  const intervalTime = 50;
+  const increment = (intervalTime / duration) * 100;
+
+  const interval = setInterval(() => {
+    progress += increment;
+    if (progress > 100) progress = 100;
+    progressBar.style.width = progress + '%';
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      
+      window.location.href = '/feedback';
+    }
+  }, intervalTime);
+</script>
+</body>
+</html>

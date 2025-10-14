@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Sticker Dropdown + Fabric.js (fixed)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 30px;
+    }
+
+    /* Button */
+    .dropbtn {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .dropbtn:hover { background-color: #0056b3; }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    /* NOTE: display is NONE by default - don't set display:grid here */
+    .dropdown-content {
+      display: none;              /* hidden by default */
+      position: absolute;
+      background-color: white;
+      min-width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      padding: 10px;
+      z-index: 1000;
+
+      /* Grid layout properties (kept) - but display set only when shown */
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    /* Show dropdown when parent has .show */
+    .dropdown.show .dropdown-content {
+      display: grid;
+    }
+
+    /* Stickers inside dropdown */
+    .dropdown-content img {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      background: #f8f9fa;
+      object-fit: contain;
+    }
+    .dropdown-content img:hover {
+      transform: scale(1.1);
+      border: 2px solid #007bff;
+    }
+
+    /* Canvas styling */
+    #canvasContainer { display:flex; justify-content:center; margin-top:20px; }
+    canvas { border: 2px solid #ccc; border-radius: 8px; background: white; }
+
+    /* Download button */
+    .savebtn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: 0.3s;
+    }
+    .savebtn:hover { background: #218838; }
+
+    /* Small mobile responsiveness */
+    @media (max-width:480px) {
+      .dropdown-content { grid-template-columns: repeat(3, 1fr); min-width: 220px; }
+      .dropdown-content img { width:48px; height:48px; }
+      canvas { width: 320px; height: 240px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🎨 Photo Booth Sticker Editor — Fixed</h2>
+
+  <!-- Dropdown -->
+  <div class="dropdown" id="stickerDropdown">
+    <button class="dropbtn" id="toggleDropdown">🩷 Choose Stickers</button>
+    <div class="dropdown-content" id="stickerList" aria-hidden="true"></div>
+  </div>
+
+  <!-- Canvas -->
+  <div id="canvasContainer">
+    <canvas id="c" width="600" height="450"></canvas>
+  </div>
+
+  <!-- Save button -->
+  <div>
+    <button class="savebtn" id="downloadBtn">💾 Download Photo</button>
+  </div>
+
+  <script>
+    // REPLACE this with your GitHub Pages base URL
+    const baseURL = "https://allysandraredondo.github.io/stickers-lib/images/";
+
+    // Sticker filenames (ensure they exist exactly as names here)
+    const stickers = [
+      "cat_1.png",
+      "cat_2.png",
+      "cat_3.png",
+      "cat_4.png",
+      "cat_5.png",
+      "cat_6.png",
+      "heart_1.png",
+      "heart_2.png",
+      "rabbit_1.png",
+      "rabbit_2.png"
+    ];
+
+
+    // Initialize Fabric.js canvas
+    const canvas = new fabric.Canvas('c', { preserveObjectStacking: true });
+    canvas.setBackgroundColor('#ffffff', canvas.renderAll.bind(canvas)); // white background
+
+    // Delete icon image used in the custom control
+    const deleteImg = new Image();
+    deleteImg.src = "https://cdn-icons-png.flaticon.com/512/1828/1828843.png";
+    deleteImg.onload = () => console.log('delete icon loaded');
+
+    // Fill the dropdown grid with sticker thumbnails
+    const stickerList = document.getElementById('stickerList');
+    stickers.forEach(name => {
+      const img = document.createElement('img');
+      img.src = baseURL + name;
+      img.alt = name;
+      img.setAttribute('data-img', baseURL + name);
+
+      // Debug: log success/failure to console
+      img.addEventListener('load', () => console.log('loaded:', img.src));
+      img.addEventListener('error', (e) => console.error('failed to load:', img.src, e));
+
+      // when clicked, add to canvas and close the dropdown
+      img.addEventListener('click', (ev) => {
+        addSticker(img);
+        // close dropdown after selection
+        dropdown.classList.remove('show');
+        stickerList.setAttribute('aria-hidden', 'true');
+      });
+
+      stickerList.appendChild(img);
+    });
+
+    // Dropdown toggle behavior
+    const dropdown = document.getElementById('stickerDropdown');
+    const toggleButton = document.getElementById('toggleDropdown');
+
+    toggleButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('show');
+      const isShown = dropdown.classList.contains('show');
+      stickerList.setAttribute('aria-hidden', !isShown);
+    });
+
+    // Close dropdown when clicking outside
+    window.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('show');
+        stickerList.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Function to add sticker to Fabric.js canvas
+    function addSticker(el) {
+      const imgUrl = el.getAttribute('data-img');
+      if (!imgUrl) return console.error('no data-img on element');
+
+      fabric.Image.fromURL(imgUrl, function(sticker) {
+        // initial size: scale relative to image natural size
+        const maxWidth = 200;
+        const scale = Math.min(1, maxWidth / (sticker.width || maxWidth));
+        sticker.set({
+          left: canvas.getWidth() / 2 - (sticker.width * scale) / 2,
+          top: canvas.getHeight() / 2 - (sticker.height * scale) / 2,
+          scaleX: scale * 0.9,
+          scaleY: scale * 0.9,
+          selectable: true,
+          cornerColor: 'white',
+          cornerStyle: 'circle',
+          cornerSize: 10
+        });
+
+        // mark as sticker (optional)
+        sticker.sticker = true;
+
+        // add custom delete control (top-right)
+        sticker.controls.deleteControl = new fabric.Control({
+          x: 0.5,
+          y: -0.5,
+          offsetY: -16,
+          offsetX: 16,
+          cursorStyle: 'pointer',
+          mouseUpHandler: function(eventData, transform) {
+            canvas.remove(transform.target);
+            canvas.requestRenderAll();
+          },
+          render: function(ctx, left, top) {
+            const size = 20;
+            // if icon not yet loaded, draw a red X
+            if (deleteImg.complete) {
+              ctx.drawImage(deleteImg, left - size/2, top - size/2, size, size);
+            } else {
+              ctx.save();
+              ctx.strokeStyle = 'red';
+              ctx.beginPath();
+              ctx.moveTo(left - 8, top - 8);
+              ctx.lineTo(left + 8, top + 8);
+              ctx.moveTo(left + 8, top - 8);
+              ctx.lineTo(left - 8, top + 8);
+              ctx.stroke();
+              ctx.restore();
+            }
+          }
+        });
+
+        canvas.add(sticker).setActiveObject(sticker);
+        canvas.requestRenderAll();
+      }, { crossOrigin: 'anonymous' }); // crossOrigin helps with toDataURL later
+    }
+
+    // Download final canvas as PNG
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      // remove active selection handles before export
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
+
+      try {
+        const dataURL = canvas.toDataURL({ format: 'png', quality: 1.0 });
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'photo_with_stickers.png';
+        link.click();
+      } catch (err) {
+        console.error('Export failed (possible CORS on images):', err);
+        alert('Export failed — check console for CORS errors. Use GitHub Pages or a CORS-friendly host for images.');
+      }
+    });
+
+    // Debug helper: quickly log canvas size
+    console.log('canvas size', canvas.getWidth(), canvas.getHeight());
+  </script>
+</body>
+</html>

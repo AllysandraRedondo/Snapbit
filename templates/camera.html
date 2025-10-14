@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Step 1: Capture Photos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+    body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        background-color: #DFEBFD;
+        margin: 0;
+        padding: 0;
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .number {
+        font-size: 45px;
+        font-weight: bold;
+        color: black;
+        margin-left: 50px;
+    }
+
+    .right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 30px;
+        margin-right: 40px;
+    }
+
+    .help {
+        border-radius: 100%;
+        background-color: white;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 35px;
+        font-weight: bold;
+        color: #000;
+        cursor: pointer;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke-width: 2px;
+    }
+
+    .menu {
+        cursor: pointer;
+    }
+
+    .menu div {
+        height: 8px;
+        background-color: white;
+        margin: 10px 0;
+        width: 70px;
+        border-radius: 100px;
+    }
+    /* ------------SIDE MENU--------------- */
+.sidemenu {
+  position: fixed;
+  top: 0;
+  right: -750px;
+  width: auto; /* let its children define size */
+  height: 100%;
+  background: none; /* no bg here, let content handle it */
+  transition: right 0.3s ease-in-out;
+  z-index: 2000;
+}
+/* -------------------------YUNG PANG EXIT----------------------------- */
+.semicircle {
+  width: 110px;
+  height: 90px;
+  background: #697D9B;
+  border-radius: 100px 0 0 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-start; /* ✅ keeps it at top */
+}
+.semicircle button {
+  width: 80px;
+  height: 80px;
+  background-color: #697D9B;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.semicircle img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+.side-wrapper {
+  display: flex;
+  align-items: flex-start; /* Keep at top */
+  height: 100%;
+}
+
+/* -------------------------YUNG AI AT BG AND CAMERA EFFECT----------------------------- */
+
+.content {
+  width: 600px;
+  height: 100%;
+  background-color: #697D9B;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* -------------------------YUNG BG AND CAMERA EFFECTS----------------------------- */
+
+    .design {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 70px;
+    }
+/* -------------------------YUNG CAROUSEL PARA GUMALAW YUNG MGA BILOG----------------------------- */
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 600px;
+      position: relative;
+    }
+
+    .swiper {
+      width: 80%;
+      max-width: 500px;
+      margin-bottom: 35px;
+    }
+
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide button {
+      background: none;
+      border: white;
+      padding: 0;
+      cursor: pointer;
+            width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+    
+
+    .swiper-slide img{
+      object-fit: contain;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+
+    }
+
+    .swiper-slide img:hover {
+      border: 2px solid #2196f3;
+    }
+
+/* -------------------------YUNG PANG NEXT AND PREV----------------------------- */
+
+    .swiper-button-prev, .swiper-button-next {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      color: wheat;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      margin-top: -20px;
+    }
+    .swiper-button-prev i{
+        margin-left: 80px;
+    }
+    .swiper-button-next i {
+        margin-right: 80px;
+    }
+    .swiper-button-prev i,
+    .swiper-button-next i {
+      font-size: 4rem;
+      color: wheat;
+    }
+
+
+    .swiper-button-prev {
+      left: -70px; 
+    }
+
+    .swiper-button-next {
+      right: -70px; 
+    }
+
+    .swiper-button-prev::after, .swiper-button-next::after {
+      display: none;
+    }
+
+    .bg-txt p {
+        font-size: 30px;
+        margin-left: 20px;
+        margin-bottom: 25px;
+        margin-top: 20px;
+    }
+
+/* -------------------------YUNG AI----------------------------- */
+/* ----------YUNG PREVIEW------------- */
+        .preview{
+        margin-top: 30px;
+    }
+        .output{
+            width: 500px;
+            height: 250px;
+            background-color: white;
+                place-items: center;
+                    aspect-ratio: 1/1;
+                      position: relative;
+            margin-left: 30px;
+                display: grid;
+    place-items: center;
+            
+        }
+        .preview-button{
+            margin-left: 350px;
+            margin-top: 20px;
+        }
+        .skeleton{
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+        }
+            .view-button{
+                width: 150px;
+                height: 50px;
+                background-color: EAF2FE;
+                border-radius: 100px;
+            }
+/* ----------YUNG PANG PROMPT------------- */          
+    .ai-prompt{
+        margin-top: 30px;
+    }
+        .ai-center{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+                }
+
+                .prompt{
+                background-color: white;
+                width: 500px;
+                height: 100px;
+                border-radius: 20px;
+                margin-top: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 15px;
+                resize: none; 
+                   border: none;
+                }
+                .prompt:focus {
+                  outline: none;
+                  border: none;
+                }
+
+        .ai-button{
+            margin-left: 350px;
+            margin-top: 20px;
+        }
+            .prompt-button{
+                width: 150px;
+                height: 50px;
+                background-color: EAF2FE;
+                border-radius: 100px;
+            }
+  /* -----------------------YUNG CAMERA---------------------------- */
+  .cameraContainer {
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* ✅ Give it a starting width */
+  transition: transform 0.3s ease-in-out, width 0.5s ease-in-out;
+}
+
+/* Video element for smooth scaling */
+.cameraContainer img {
+  width: 900px;   /* original size */
+  height: 550px;
+  transition: transform 0.5s ease-in-out;
+  transform: scaleX(-1);
+}
+.menu-open .cameraContainer {
+  transform: translateX(-300px); /* ✅ Move smoothly left */
+}
+.menu-hide .cameraContainer {
+  transform: translateX(0px); /* ✅ Move smoothly left */
+}
+
+
+
+
+/* pop up */
+
+
+
+    .popup{
+            display: none; 
+            z-index: 1000;
+              position: fixed;     /* ✅ make it fixed to viewport */
+  top: 0;
+  left: 0;
+  width: 100%;         /* ✅ cover whole screen */
+  height: 100%;
+
+    }
+    .pop {
+      background-color: #fffef7;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+        justify-content: center;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 35px;
+      font-weight: bold;
+      margin-bottom: 35px;
+      color: black;
+    }
+
+    .carousel-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 800px;  
+      height: 550px;   
+      border-radius: 25px;
+      background: white;
+      box-shadow: 0 0 55px 20px rgba(255, 230, 100, 0.55);
+    }
+
+    .carousel {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 25px;
+      position: relative;
+      z-index: 1;
+    }
+
+.carousel img {
+  width: 800px;
+  height: 550px;
+  border-radius: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.6s ease;
+  opacity: 0;              /* start hidden */
+  pointer-events: none;
+}
+
+.carousel img.active {
+  opacity: 1;              /* show active slide */
+  pointer-events: auto;
+}
+
+    
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 42px;  
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 2;
+      color: black;
+    }
+
+    .arrow.left { left: -70px; }
+    .arrow.right { right: -110px; }
+
+.bottom-bar {
+  display: flex;
+  justify-content: center; /* Space between dots and button */
+  align-items: center;
+  width: 400px; /* Same width as carousel */
+  margin-top: 40px;
+  padding-bottom: 30px;
+}
+
+.dots {
+  display: flex;
+  gap: 14px;
+  padding-right: 300px;
+  margin-left: 450px;
+   /* space between dots */
+}
+
+.dot {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background-color: black;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.dot.active {
+  background-color: gray;
+  transform: scale(1.3);
+}
+
+.okay-btn {
+  background-color: #fffecf;
+  border: none;
+  border-radius: 30px;
+  padding: 18px 55px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.25);
+  transition: 0.3s;
+}
+
+.okay-btn:hover {
+  background-color: #fff9a3;
+}
+/* -------------------------------------------LOADING------------------------------------------------ */
+  .loading {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #d9f0ff, #a8d8f0, #82bde6);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                z-index: 1000;
+              position: fixed;     /* ✅ make it fixed to viewport */
+  width: 100%;         /* ✅ cover whole screen */
+  height: 100%;
+  }
+
+
+  .loading-card {
+    background: #ffffff;
+    border-radius: 25px;
+    padding: 70px 80px; 
+    box-shadow:
+      25px 25px 60px rgba(0,0,0,0.12),
+      inset 0 0 50px rgba(138, 173, 221, 0.18);
+    text-align: center;
+    width: 600px;  
+  }
+
+  
+  .loading-card h1 {
+    font-weight: 700;
+    font-size: 2.5rem; 
+    margin-bottom: 40px;
+    color: #222;
+  }
+
+
+  .loading-card img {
+    height: 180px; 
+    margin-bottom: 40px;
+    user-select: none;
+  }
+
+  
+  .progress-bar-container {
+    background-color: #cce1ff;
+    border-radius: 20px;
+    height: 30px; 
+    width: 100%;
+    overflow: hidden;
+  }
+
+
+  .progress-bar {
+    background: linear-gradient(90deg, #6fa8dc, #3d85c6);
+    height: 100%;
+    width: 0;
+    border-radius: 20px;
+    transition: width 0.2s ease;
+  }
+
+          .countdown{
+            position: fixed; 
+            top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            font-size: 300px; 
+            font-weight: bold; 
+            color: white; 
+            display: none; 
+            z-index: 3000;
+            opacity: 50%;
+          }
+
+  </style>
+</head>
+<body>
+<div class="loading" id="loading">
+    <div class="loading-card">
+    <h1>Pls wait for a while.</h1>
+    <img src="{{ url_for('static', filename='Images/waiting/cati.png')}}" alt="Cat" />
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+</div>
+  <!-- YUNG NASA TOP -->
+
+<div class="top">
+  <div class="left">
+    <div class="number" id="photoCounter">0/0</div>
+  </div>
+  <div class="right">
+    <div class="reminder">
+      <div class="help" onclick="showPopup()">?</div>
+    </div>
+    <div class="menu" onclick="show()">
+      <div class="one"></div>
+      <div class="two"></div>
+      <div class="three"></div>
+    </div>
+  </div>
+</div>
+  <!-- YUNG CAMERA -->
+<div class="center">
+  <div class="cameraContainer">
+      <img id="img" src="{{ url_for('video_feed') }}">
+      <div id="countdown" class="countdown"></div>
+  </div>
+</div>
+<!-- YUNG BUONG SIDE MENU -->
+<div class="right-content">
+  <div class="sidemenu" id="sidemenu">
+    <div class="side-wrapper">
+      <div class="semicircle">
+          <button class="exit" onclick="hide()"><img src="{{ url_for('static', filename='Images/reject.png') }}"></button>
+      </div>
+      <div class="content">
+        <div class="preview">
+            <div class="output" id="output">
+              <div class="picture">Your Generated Image will appear here.</div>
+            </div>
+            <div class="preview-button">
+                <button class="view-button">Paste</button>
+            </div>
+        </div>
+        <div class="ai-prompt">
+            <div class="ai-center">
+              <div class="ai">
+                  <textarea class="prompt" id="prompt" placeholder="e.g a cat astronoaut playing guitar on moon, cinematic lighting, ultra detailed"></textarea>
+              </div>
+            </div>
+            <div class="ai-button">
+                <button class="prompt-button" id="generate">Generate</button>
+            </div>
+        </div>
+    <div class="design">
+        <!-- BACKGROUND Swiper --> 
+    <div class="background">
+        <div class="bg-txt"><p>Background</p></div>
+        <section class="container">
+        <div class="swiper-button-prev background-prev"><i class="ri-arrow-left-s-line"></i></div>
+        <div class="swiper card__container1">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide"><button onclick="setBackground(0)">Remove</button></div>
+              <div class="swiper-slide"><button onclick="setBackground(1)" style="background-color: lightpink">Pink</button></div>
+              <div class="swiper-slide"><button onclick="setBackground(2)" style="background-color: lightblue">Blue</button></div>
+              <div class="swiper-slide"><button onclick="setBackground(3)" style="background-color: #CF9FFF">Violet</button></div>
+              <div class="swiper-slide"><button onclick="setBackground(4)" style="background-color: #ADEBB3">Green</button></div>
+              <div class="swiper-slide"><button onclick="setBackground(5)" style="background-color: #FFFCCC">Yellow</button></div>
+
+            </div>
+        </div>
+        <div class="swiper-button-next background-next"><i class="ri-arrow-right-s-line"></i></div>
+        </section>
+        </div>
+            <!-- Camera Effects -->
+        <div class="effects">
+            <div class="bg-txt"><p>Camera Effects</p></div>
+            <section class="container">
+            <div class="swiper-button-prev effects-prev"><i class="ri-arrow-left-s-line"></i></div>
+            <div class="swiper card__container2">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><button onclick="setFilter('dog')"><img src="{{ url_for('static', filename='/Images/filters/dog_ears.png') }}"></button></div>
+                    <div class="swiper-slide"><button onclick="setFilter('mustache')"><img src="{{ url_for('static', filename='/Images/filters/mustache.png') }}"></button></div>
+                    <div class="swiper-slide"><button onclick="setFilter('cat')"><img src="{{ url_for('static', filename='Images/filters/cat.png') }}" width="60px" height="60px"></button></div>
+                    <div class="swiper-slide"><button onclick="setFilter('sunglasses')"><img src="{{ url_for('static', filename='Images/filters/sunglasses.png') }}"></button></div>
+                    <div class="swiper-slide"><button onclick="setFilter('headband')"><img src="{{ url_for('static', filename='Images/filters/headband.png') }}"></button></div>
+                    <div class="swiper-slide"><button onclick="setFilter('shark')"><img src="{{ url_for('static', filename='Images/filters/shark.png') }}"></button></div>
+                </div>
+            </div>
+            <div class="swiper-button-next effects-next"><i class="ri-arrow-right-s-line"></i></div>
+            </section>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="popup" id="popup">
+<div class="pop">
+  <h1>Instructions</h1>
+  <div class="carousel-container">
+    <button class="arrow left" onclick="prevSlide()">&lt;</button>
+    <div class="carousel">
+<img src="{{ url_for('static', filename='Images/instuction/2.png') }}" alt="Instruction 1" id="slide1" class="active">
+<img src="{{ url_for('static', filename='Images/instuction/3.png') }}" alt="Instruction 2" id="slide2">
+<img src="{{ url_for('static', filename='Images/instuction/4.png') }}" alt="Instruction 3" id="slide3">
+<img src="{{ url_for('static', filename='Images/instuction/5.png') }}" alt="Instruction 4" id="slide4">
+<img src="{{ url_for('static', filename='Images/instuction/6.png') }}" alt="Instruction 5" id="slide5">
+
+    </div>
+    <button class="arrow right" onclick="nextSlide()">&gt;</button>
+  </div>
+
+<div class="bottom-bar">
+  <div class="dots">
+    <div class="dot active" onclick="goToSlide(1)"></div>
+    <div class="dot" onclick="goToSlide(2)"></div>
+    <div class="dot" onclick="goToSlide(3)"></div>
+    <div class="dot" onclick="goToSlide(4)"></div>
+    <div class="dot" onclick="goToSlide(5)"></div>
+  </div>
+  <button class="okay-btn" onclick="hidePopup()">Okay</button>
+</div>
+</div>
+</div>
+
+<!-- CAMERA SETTINGS -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0"></script>
+<script>
+const img = document.getElementById('img'); // Flask feed <img>
+const counterDisplay = document.getElementById('photoCounter');
+const countdownEl = document.getElementById('countdown'); // ✅ use existing div
+
+localStorage.removeItem("canvasState");
+localStorage.removeItem("previewImage");
+
+// Get number of photos from URL or default to 2
+const urlParams = new URLSearchParams(window.location.search);
+const photoCount = parseInt(urlParams.get('template')) || 2;
+
+let capturedImages = [];
+let currentPhoto = 0;
+let isCapturing = false; // ✅ Prevent multiple triggers
+
+// ✅ Show initial counter
+counterDisplay.textContent = `${currentPhoto}/${photoCount}`;
+
+// Function to capture the current <img> frame
+function takePhoto() {
+  const canvas = document.createElement('canvas');
+  canvas.width = img.width || 300;
+  canvas.height = img.height || 225;
+  const context = canvas.getContext('2d');
+
+  // Draw the current <img> frame
+  context.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  // Save the image
+  const imageData = canvas.toDataURL("image/jpeg");
+  capturedImages.push(imageData);
+}
+
+function startCapture() {
+  if (isCapturing) return;
+  isCapturing = true;
+
+  let count = 3;
+  countdownEl.style.display = "block";
+  countdownEl.textContent = count;
+
+  const timer = setInterval(() => {
+    count--;
+    if (count > 0) {
+      countdownEl.textContent = count;
+    } else {
+      clearInterval(timer);
+      countdownEl.style.display = "none";
+
+      // ✅ Take the photo safely
+      if (currentPhoto < photoCount) {
+        takePhoto();
+        currentPhoto++;
+        counterDisplay.textContent = `${currentPhoto}/${photoCount}`;
+      }
+
+      // ✅ If all photos are done
+      if (currentPhoto >= photoCount) {
+        localStorage.setItem("capturedPhotos", JSON.stringify(capturedImages));
+
+        // Small delay before redirect to ensure all rendering is done
+        setTimeout(() => {
+          window.location.href = "/design";
+        });
+      }
+
+      // ✅ Unlock only if not finished
+      if (currentPhoto < photoCount) {
+        isCapturing = false;
+      }
+    }
+  }, 1000);
+}
+
+
+// ✅ Capture using keyboard clicker
+document.addEventListener("keydown", function(event) {
+  if (event.key === "F9" || event.key === "F10"){
+
+    startCapture();
+  }
+});
+</script>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+// -------------------------------PARA MAG SHOW SIDE MENU------------------------------------
+  function show() {
+  const sidemenu = document.getElementById("sidemenu");
+  const body = document.body;
+
+  if (sidemenu.style.right === "0px") {
+    sidemenu.style.right = "-750px";  // Hide menu
+    body.classList.remove("menu-open"); // Remove shrink effect
+  } else {
+    sidemenu.style.right = "0px";     // Show menu
+    body.classList.add("menu-open");  // Apply shrink effect
+  }
+}
+// -------------------------------PARA MAG HIDE SIDE MENU------------------------------------
+
+function hide() {
+  const sidemenu = document.getElementById("sidemenu");
+  const body = document.body;
+
+  sidemenu.style.right = "-750px";     
+  body.classList.remove("menu-open");  // ✅ Always remove class
+}
+// -------------------------------PARA SA CAUROSEL------------------------------------
+
+  let swiperCards1 = new Swiper(".card__container1", {
+    loop: true,
+    spaceBetween: 20,
+    grabCursor: true,
+    navigation: {
+      nextEl: ".background-next",
+      prevEl: ".background-prev",
+    },
+    breakpoints: {
+      0: { slidesPerView: 1 },
+      600: { slidesPerView: 2 },
+      968: { slidesPerView: 4 },
+    },
+  });
+    let swiperCards2 = new Swiper(".card__container2", {
+    loop: true,
+    spaceBetween: 20,
+    grabCursor: true,
+    navigation: {
+      nextEl: ".effects-next",
+      prevEl: ".effects-prev",
+    },
+    breakpoints: {
+      0: { slidesPerView: 1 },
+      600: { slidesPerView: 2 },
+      968: { slidesPerView: 4 },
+    },
+  });
+</script>
+
+<!-- POP UP -->
+<script>
+var div = document.getElementById('popup');
+var display = 0;
+
+function showPopup(){
+  if(display == 0){
+    div.style.display = 'block';
+    display = 1;
+  }
+}
+
+function hidePopup(){
+  if(display ==1){
+    div.style.display = 'none';
+        display = 0;
+
+  }
+}
+</script>
+
+
+<!-- SLIDE NG PUP UP -->
+  <script>
+let currentSlide = 1;
+const totalSlides = 5;
+
+function showSlide(index) {
+  const slides = document.querySelectorAll('.carousel img');
+  slides.forEach(slide => slide.classList.remove('active'));
+  slides[index - 1].classList.add('active');
+
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((dot, idx) => {
+    dot.classList.remove('active');
+    if (idx === index - 1) {
+      dot.classList.add('active');
+    }
+  });
+}
+
+function prevSlide() {
+  currentSlide = (currentSlide === 1) ? totalSlides : currentSlide - 1;
+  showSlide(currentSlide);
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide === totalSlides) ? 1 : currentSlide + 1;
+  showSlide(currentSlide);
+}
+
+function goToSlide(index) {
+  currentSlide = index;
+  showSlide(currentSlide);
+}
+
+  </script>
+<!-- -------AI------ -->
+<script>
+  const el = (id) => document.getElementById(id);
+
+  const promptEl = el("prompt");
+  const generateBtn = el("generate");
+  const output = el("output");
+
+  // Ratio locked to 16:9
+  function ratioToSize() {
+    return [500, 255];
+  }
+
+  function buildPollinationsURL(prompt) {
+    const [w, h] = ratioToSize();
+    const base = "https://image.pollinations.ai/prompt/";
+    const safePrompt = encodeURIComponent(prompt);
+    const params = new URLSearchParams({
+      width: String(w),
+      height: String(h),
+      model: "flux",
+      seed: Math.floor(Math.random() * 1e9),
+      nologo: true,
+      enhance: false,
+      ts: String(Date.now())
+    });
+    return `${base}${safePrompt}?${params.toString()}`;
+  }
+
+function setLoading(loading){
+    output.innerHTML = '';
+    if (loading) {
+        const sk = document.createElement("div");
+        sk.classList.add("skeleton");
+        output.append(sk);
+    }
+}
+
+
+  async function generate() {
+    generateBtn.disabled = true;
+    const basePrompt = (promptEl.value || '').trim();
+    if (!basePrompt) {
+      alert("⚠️ Please enter a prompt!");
+      generateBtn.disabled = false;
+      return;
+    }
+
+    const url = buildPollinationsURL(basePrompt);
+    setLoading(true);
+
+    const img = new Image();
+    img.referrerPolicy = "no-referrer";
+    img.onload = () => {
+      output.innerHTML = "";
+      output.appendChild(img);
+      generateBtn.disabled = false;
+    };
+    img.onerror = () => {
+      output.innerHTML = "❌ Failed to load image!";
+      generateBtn.disabled = false;
+    };
+    img.src = url;
+  }
+
+  generateBtn.addEventListener("click", generate);
+</script>
+
+<script>
+function setBackground(index) {
+  fetch(`/set_background/${index}`, { method: "POST" })
+    .then(res => res.json())
+    .then(data => console.log("Background set:", data))
+    .catch(err => console.error(err));
+}
+</script>
+<!-- ----------------------------LOADING-------------------------------- -->
+<script>
+  const progressBar = document.getElementById('progressBar');
+    const cameraPage = document.getElementById('all');
+    const loader = document.getElementById('loading');
+  let progress = 0;
+  const duration = 5000; 
+  const intervalTime = 10;
+  const increment = (intervalTime / duration) * 100;
+
+  const interval = setInterval(() => {
+    progress += increment;
+    if (progress > 100) progress = 100;
+    progressBar.style.width = progress + '%';
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      
+            loader.style.display = "none";
+                  cameraPage.style.display = "block";
+    }
+  }, intervalTime);
+</script>
+<script>
+      function setFilter(name) {
+      fetch(`/set_filter/${name}`)
+        .then(res => console.log(`Switched to ${name}`))
+        .catch(err => console.error(err));
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email</title>
+</head>
+<style>
+    .poppins-medium {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+body {
+    background-color: #fffef7;
+    font-family: "Poppins", sans-serif;
+    font-weight: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 40px 20px;
+    overflow: hidden;
+    background: radial-gradient(circle, rgba(173, 205, 246, 3) 0%, rgba(255, 255, 255, 2) 100%);
+}
+
+.div--main--container {
+    padding: 50px;
+    height: 500px;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 35px;
+    color: black;
+    padding-top: 100px;
+}
+
+::placeholder {
+    text-align: center;
+}
+
+button {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    padding:12px;
+    border-radius: 10px;
+    border: none;
+    width: 150px;
+    background-color: #1E3A8A;
+    color: white;
+}
+
+input {
+    font-family: "Poppins", sans-serif;
+    border-radius: 50px;
+    border: none;
+    width: 324px;
+    padding: 20px;
+    text-align: center;
+    font-size: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+
+input[type="text"] {
+    font-size: 15px;
+}
+
+button:active {
+    background-color: #031033;
+    transform: translateY(2px);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+<body>
+ <h1> Please enter your Email Address </h1>
+ <form action="/submit" method="POST">
+ <input type="email" id="email" name="email" placeholder="name@gmail.com">
+ <br>
+ <button type="submit" id="submit" name="submit">Submit</button>
+ </form>
+ <br>
+ <h3>The picture you've taken would be sent to your inbox</h3>
+ <h3>Please make sure to check your spam messages</h3>
+
+ <iframe id="cameraFrame" src="/camera" style="display:none;"></iframe>
+
+</body>
+</head>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome - SnapBits</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%; width: 100%;
+      background: #b4d8db;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    body {
+      background: linear-gradient(135deg, #cee9e6 0%, #acc9c7 100%);
+      border-radius: 30px;
+      box-sizing: border-box;
+      width: 95vw;   
+      height: 95vh;  
+      margin: auto;
+      flex-direction: column;
+      user-select: none;
+      border: 5px solid #7d9e9c; 
+    }
+    img {
+      width: 300px;  
+      height: auto;
+      margin-bottom: 40px;
+    }
+    h1 {
+      margin: 0;
+      font-family: 'Brush Script MT', cursive, sans-serif;
+      font-size: 5rem;  
+      font-weight: 700;
+      color: #000;
+    }
+    p {
+      margin: 25px 0 0 0;
+      font-size: 2rem;  
+      font-family: 'Courier New', Courier, monospace;
+      color: #000;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body onclick="goToInstructions()">
+  <img src="{{ url_for('static', filename='Images/welcome/Cat.png') }}" alt="Cat" />
+  <h1>SnapBits</h1>
+  <p>Tap to Start</p>
+
+<script>
+  function goToInstructions() {
+    window.location.href = "/instructions"; 
+  }
+</script>
+</body>
+</html>

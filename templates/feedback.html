@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+  <title>Rate Experience</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fffef7;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: radial-gradient(circle, rgba(173, 205, 246, 3) 0%, rgba(255, 255, 255, 2) 100%);
+    }
+
+    .card {
+      background: #FFFFFF;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 480px;
+    }
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .stars {
+      padding: -10px;
+      justify-content: center;
+      gap: 10px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .star {
+      padding-top: -20px;
+      color: #ccc;
+      transition: color 0.3s;
+    }
+
+    .star.hover,
+    .star.selected {
+      color: #FFD700; 
+    }
+
+    button {
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      padding:12px;
+      border-radius: 10px;
+      border: none;
+      width: 350px;
+      background-color: #1E3A8A;
+      color: white;
+    }
+
+    button:active {
+    background-color: #031033;
+    transform: translateY(2px);
+}
+
+    h2 {
+      font-family: "Poppins", sans-serif;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="stars">
+      <h2>Rate your experience!</h2>
+      <span class="star" data-rating="1">&#9733;</span>
+      <span class="star" data-rating="2">&#9733;</span>
+      <span class="star" data-rating="3">&#9733;</span>
+      <span class="star" data-rating="4">&#9733;</span>
+      <span class="star" data-rating="5">&#9733;</span>
+    </div>
+      <br>
+      <button onclick="submit_Feedback()">Submit</button>
+  </div>
+
+  <script>
+    let rating = 0;
+
+    //when the stars are clicked, getting the attribute according to the star rating chosen
+    const stars = document.querySelectorAll('.star');
+    
+    stars.forEach(star => {
+      star.addEventListener('click', function() {
+        rating = parseInt(this.getAttribute('data-rating'));
+        console.log('Selected rating: ', rating);
+
+        //Stars highlight
+        stars.forEach(s => {
+          if (s.getAttribute('data-rating') <= rating) {
+            s.style.color = 'gold';
+          } else {
+            s.style.color = '#ccc';
+          }
+        })
+      });
+      });
+    /*stars.forEach((star, index) => {
+      star.addEventListener('mouseover', () => {
+        resetStars();
+        for (let i = 0; i <= index; i++) {
+          stars[i].classList.add('hover');
+        }
+      });
+
+      star.addEventListener('mouseout', resetStars);
+
+      star.addEventListener('click', () => {
+        rating = index + 1;
+        resetStars();
+        for (let i = 0; i < rating; i++) {
+          stars[i].classList.add('selected');
+        }
+        console.log("Rating selected:", rating);
+      });
+    });*/
+
+    function submit_Feedback() {
+      if (rating == 0 ) {
+        alert('Please select a rating!');
+        return;
+      } else { //connection to the flask for Database
+        fetch('/submit-feedback', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          }, 
+          body: JSON.stringify({
+            rating: rating
+          })
+        })
+        .then(response => response.json())
+        .then(data=> {
+          console.log(data)
+          window.location.href = '/email';
+        })
+        .catch(error => {
+          console.log('Error: ', error)
+          alert('Something went wrong');
+        });
+      }
+
+    }
+    function resetStars() {
+      stars.forEach(star => star.classList.remove('hover'));
+    }
+
+  </script>
+
+</body>
+</html>

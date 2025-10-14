@@ -174,70 +174,82 @@ body {
 
 /* 🪞 Popup */
 .pop {
-  display: none;
-  position: fixed;
+            display: none; 
+            z-index: 1000;
+              position: fixed;     /* ✅ make it fixed to viewport */
   top: 0;
   left: 0;
-  width: 100%;
+ width: 100%;   /* full screen width */
   height: 100%;
-  background: rgba(0,0,0,0.3);
-  z-index: 999;
-  justify-content: center;
-  align-items: center;
+
 }
 
 .popup {
-  background: #E7F6F3;
-  border-radius: 15px;
+  font-family: Arial, sans-serif;
+  background-color: #E7F6F3;
   padding: 30px;
-  width: 90%;
-  max-width: 750px;
   text-align: center;
-}
-
-.popup h2 {
-  margin-bottom: 20px;
-}
-
-.image-container {
-  background: white;
-  padding: 20px;
   border-radius: 15px;
-  border: 2px solid #fff;
-  display: inline-block;
+ width: 100vw;   /* full screen width */
+  height: 100vh;  /* ✅ responsive height */
+  overflow: auto;   /* ✅ scroll if content too tall */
+  position: relative;
+ width: 100vw;
+  height: 100vh;
+  display: flex;             /* make it flex */
+  align-items: center;       /* center vertically */
+  justify-content: center;   /* center horizontally */
+  flex-direction: column;    /* stack content */
 }
 
-.image-container img {
-  width: 680px;
-  height: 420px;
-  border-radius: 10px;
-}
 
-.back {
-  position: absolute;
-  top: 25px;
-  left: 25px;
-  background: transparent;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-}
+    .back {
+      position: absolute;
+      top: 30px;
+      left: 40px;
+      font-size: 23px;
+      text-decoration: none;
+      color: black;
+      border: none;
+      background-color: #E7F6F3;
+    }
 
-.print-btn {
-  margin-top: 20px;
-  padding: 14px 30px;
-  border: 2px dashed #7C5EFF;
-  border-radius: 25px;
-  background: #FEFEFE;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+    h2 {
+      margin-top: 25px;
+      margin-bottom: 15px;
+    }
 
-.print-btn:hover {
-  background: #7C5EFF;
-  color: white;
-}
+    /* frame style*/
+    .image-container {
+      background: #FFFFFF;
+      display: inline-block;
+      padding: 20px;
+      border-radius: 15px;
+      border: 2px solid #fffefe; 
+    }
+    .image-container img{
+      width: 680px;
+      height: 420px;
+    }
+    .question {
+      margin: 30px 0 30px;
+      font-size: 15px;
+    }
+
+    .print-btn {
+      padding: 14px 30px;
+      border: 2px dashed #7C5EFF;
+      border-radius: 25px;
+      background: #FEFEFE;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .print-btn:hover {
+      background: #7C5EFF;
+      color: #FFFFFF;
+    }
 
 </style>
 </head>
@@ -369,7 +381,7 @@ body {
 
   // Canvas size
   canvas.setWidth(750);
-  canvas.setHeight(450);
+  canvas.setHeight(500);
   canvas.setBackgroundColor("white", canvas.renderAll.bind(canvas));
 
   // 🔹 Function: return slot positions depending on number of photos
@@ -409,7 +421,37 @@ body {
   }
 
   // 🔹 Load Photos into Auto-Layout (with flip fix)
+  function loadPhotos() {
+    const slots = getSlotPositions(photos.length);
 
+    if (slots.length === 0) {
+      alert("Unsupported number of photos. Please take 3, 4, or 5 photos.");
+      return;
+    }
+
+    photos.forEach((photoSrc, index) => {
+      if (index >= slots.length) return; // stop if more photos than slots
+      const slot = slots[index];
+
+fabric.Image.fromURL(photoSrc, img => {
+  img.set({
+    left: slot.x + slot.width / 2,
+    top: slot.y,
+    scaleX: -(slot.width / img.width),
+    scaleY: slot.height / img.height,
+    originX: "center",
+    selectable: false,   // 🚀 cannot select/move
+    evented: false       // 🚀 ignores clicks
+  });
+  canvas.add(img);
+  canvas.sendToBack(img);
+});
+
+
+    });
+  }
+
+  loadPhotos();
 </script>
 
   <!-- PARA SA STICKERS -->

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank you!</title>
+</head>
+<style>
+    .poppins-medium {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.pacifico-regular {
+  font-family: "Pacifico", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+body {
+    background-color: #fffef7;
+    font-family: "Poppins", sans-serif;
+    font-weight: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 40px 20px;
+    overflow: hidden;
+    background: #FFE4E1;
+    background: radial-gradient(circle, rgba(255, 228, 225, 1) 0%, rgba(254, 254, 254, 1) 100%);
+}
+
+.div--main--container {
+    padding: 50px;
+    height: 500px;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: black;
+    padding-top: 80px;
+}
+
+h3 {
+    margin-bottom: auto;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+}
+</style>
+ <h1> Thank you for trying <span class ="pacifico-regular">SnapBits!</span></h1> 
+ <img src="{{ url_for('static', filename='Images/welcome/Cat.png') }}" alt="cat-pic">
+
+
+ <script>
+  let progress = 0;
+  const duration = 3000; 
+  const intervalTime = 30;
+  const increment = (intervalTime / duration) * 100;
+  const interval = setInterval(() => {
+    progress += increment;
+    if (progress > 100) progress = 100;
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      
+      window.location.replace('/');
+
+    }
+  }, intervalTime);
+</script>
+</body>
+</html>
